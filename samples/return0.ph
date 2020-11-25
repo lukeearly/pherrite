@@ -1,3 +1,7 @@
+fn abc() {
+   return 123;
+}
+
 fn main() {
-   return 0;
+   return abc();
 }

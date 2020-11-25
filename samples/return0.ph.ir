@@ -1,0 +1,13 @@
+; ModuleID = 'default pherrite module'
+source_filename = "default pherrite module"
+
+define i32 @abc() {
+entry:
+  ret i32 2
+}
+
+define i32 @main() {
+entry:
+  %calltmp = call i32 @abc()
+  ret i32 %calltmp
+}

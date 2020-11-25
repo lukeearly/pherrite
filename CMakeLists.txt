@@ -1,7 +1,16 @@
-# minimum required CMAKE version
 project(Pherrite)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.7 FATAL_ERROR)
+
+find_package(LLVM REQUIRED CONFIG)
+
+message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+
+include_directories(${LLVM_INCLUDE_DIRS})
+add_definitions(${LLVM_DEFINITIONS})
+
+llvm_map_components_to_libnames(llvm_libs support core)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -30,14 +39,15 @@ antlr_target(PherriteLexer ${PROJECT_SOURCE_DIR}/grammar/PherriteLexer.g4 LEXER
 antlr_target(PherriteParser ${PROJECT_SOURCE_DIR}/grammar/PherriteParser.g4 PARSER
              PACKAGE pherrite
              DEPENDS_ANTLR PherriteLexer
-             COMPILE_FLAGS -lib ${ANTLR_PherriteLexer_OUTPUT_DIR})
+             COMPILE_FLAGS -lib ${ANTLR_PherriteLexer_OUTPUT_DIR} -visitor)
 
 # include generated files in project environment
 include_directories(${ANTLR_PherriteLexer_OUTPUT_DIR})
 include_directories(${ANTLR_PherriteParser_OUTPUT_DIR})
 
 # add generated grammar to phc binary target
-add_executable(pherrite main.cpp
+add_executable(pherrite main.cpp translation/codegen.cpp translation/types.cpp
                ${ANTLR_PherriteLexer_CXX_OUTPUTS}
                ${ANTLR_PherriteParser_CXX_OUTPUTS})
 target_link_libraries(pherrite antlr4_static)
+target_link_libraries(pherrite ${llvm_libs})

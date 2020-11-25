@@ -1,0 +1,7 @@
+#+TITLE: Mappings
+
+* Mappings from Pherrite to LLVM IR, with equivalent-ish examples in C for reference
+| Ph              | IR | C          |
+|-----------------+----+------------|
+| var n: Int = 0; |    | int i = 0; |
+|                 |    |            |

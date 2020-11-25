@@ -4,6 +4,7 @@
 #include "antlr4-runtime.h"
 #include "PherriteParser.h"
 #include "PherriteLexer.h"
+#include "translation/codegen.h"
 
 using namespace std;
 using namespace pherrite;
@@ -30,8 +31,27 @@ int parseTest(int argc, char *argv[]) {
 	return 0;
 }
 
+int irTest(int argc, char *argv[]) {
+	if (argc < 3) return 1;
+
+	ifstream source(argv[2]);
+
+	ANTLRInputStream input(source);
+	PherriteLexer lexer(&input);
+	CommonTokenStream tokens(&lexer);
+	PherriteParser parser(&tokens);
+
+	printIR(&parser);
+
+	return 0;
+}
+
 int main(int argc, char *argv[]) {
-	if (argc >= 2 && string(argv[1]) == "parse")
-		return parseTest(argc, argv);
+	if (argc >= 2) {
+		if (string(argv[1]) == "parse")
+			return parseTest(argc, argv);
+		else if (string(argv[1]) == "ir")
+			return irTest(argc, argv);
+	}
 	return 0;
 }

@@ -7,10 +7,12 @@ LBRACE    : '{' ;
 RBRACE    : '}' ;
 COLON     : ':' ;
 SEMICOLON : ';' ;
+COMMA     : ',' ;
 STAR      : '*' ;
 SLASH     : '/' ;
 PLUS      : '+' ;
 MINUS     : '-' ;
+ASSIGN    : '=' ;
 
 // Keywords
 FN     : 'fn' ;
@@ -19,6 +21,13 @@ LET    : 'let' ;
 VAR    : 'var' ;
 RETURN : 'return' ;
 DEBUG  : 'debug' ;
+
+// Builtin types
+INT   : 'int'       ;
+INTN  : INT DEC_LIT ;
+
+REAL  : 'real'      ;
+REALN : 'real' ('16' | '32' | '64' | '128') ;
 
 // Number literals
 ZERO    : '0' ;
